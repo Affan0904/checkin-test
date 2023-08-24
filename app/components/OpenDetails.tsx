@@ -17,11 +17,7 @@ const OpenDetails = ({ data }: any) => {
 
   return (
     <>
-      <Button
-        variant="contained"
-        sx={{ backgroundColor: "black" }}
-        onClick={handleOpen}
-      >
+      <Button variant="contained" onClick={handleOpen}>
         Open Details
       </Button>
       {opened && (

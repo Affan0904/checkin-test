@@ -40,11 +40,7 @@ export default function AddCheckin() {
 
   return (
     <div>
-      <Button
-        variant="contained"
-        sx={{ backgroundColor: "black" }}
-        onClick={handleClickOpen}
-      >
+      <Button variant="contained" onClick={handleClickOpen}>
         Add Check In
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -55,7 +51,7 @@ export default function AddCheckin() {
             justifyContent="space-between"
           >
             New Checkin
-            <Button sx={{ color: "black" }} onClick={handleClose}>
+            <Button onClick={handleClose}>
               <CloseIcon />
             </Button>
           </Stack>
@@ -83,18 +79,10 @@ export default function AddCheckin() {
           />
         </DialogContent>
         <DialogActions>
-          <Button
-            variant="outlined"
-            sx={{ color: "black", borderColor: "black" }}
-            onClick={handleClose}
-          >
+          <Button variant="outlined" onClick={handleClose}>
             Cancel
           </Button>
-          <Button
-            variant="contained"
-            sx={{ backgroundColor: "black" }}
-            onClick={createNewCheckIn}
-          >
+          <Button variant="contained" onClick={createNewCheckIn}>
             Create CheckIn
           </Button>
         </DialogActions>
