@@ -5,6 +5,7 @@ const nextConfig = {
       "rent-clone-two-lilac.vercel.app",
       "wondercrafts.org",
       "images.unsplash.com",
+      "unsplash.com",
     ],
   },
 };

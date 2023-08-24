@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -9,15 +11,27 @@ import {
   Container,
 } from "@mui/material";
 import { Typography } from "@mui/material";
-import ProjectDetails from "./ProjectDetails";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
 import { db } from "@/firebase";
 import { format } from "date-fns";
 import OpenDetails from "./OpenDetails";
+import { useEffect, useState } from "react";
 
-const ProjectTable = async () => {
-  const q = query(collection(db, "checkins"));
-  const checkins = await getDocs(q);
+const ProjectTable = () => {
+  const [checkins, setCheckins] = useState<any[]>([]);
+
+  useEffect(() => {
+    const q = query(collection(db, "checkins"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let checkinArr: any = [];
+
+      querySnapshot.forEach((doc) => {
+        checkinArr.push({ ...doc.data(), id: doc.id });
+      });
+      setCheckins(checkinArr);
+      return () => unsubscribe();
+    });
+  }, []);
 
   return (
     <Container sx={{ paddingY: "20px" }}>
@@ -33,25 +47,23 @@ const ProjectTable = async () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {checkins?.docs.map((checkin) => {
-              const data = checkin.data();
-              const date = data.createdAt;
-              // console.log(date);
+            {checkins?.map((checkin, id) => {
+              const date = checkin.createdAt;
               return (
-                <TableRow key={checkin.id}>
-                  <TableCell>{data.title}</TableCell>
-                  <TableCell>{data.owner}</TableCell>
+                <TableRow key={id}>
+                  <TableCell>{checkin.title}</TableCell>
+                  <TableCell>{checkin.owner}</TableCell>
                   <TableCell>
                     <Typography
                       component="span"
                       sx={{ backgroundColor: "cyan", padding: "3px" }}
                     >
-                      {data.status}
+                      {checkin.status}
                     </Typography>
                   </TableCell>
                   <TableCell>{format(date.toDate(), "do MMM yyyy")}</TableCell>
                   <TableCell>
-                    <OpenDetails data={data} />
+                    <OpenDetails data={checkin} />
                   </TableCell>
                 </TableRow>
               );
